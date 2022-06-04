@@ -24,7 +24,7 @@ namespace ft {
     }
 
 	template <class InputIterator1, class InputIterator2>
-	bool equal ( InputIterator1 first1, InputIterator1 last1, InputIterator2 first2 )
+	bool equal( InputIterator1 first1, InputIterator1 last1, InputIterator2 first2 )
 	{
 		while (first1!=last1) {
 			if (!(*first1 == *first2))
@@ -102,15 +102,10 @@ namespace ft {
 	template <>
 	struct is_integral<unsigned long long> : public ft::integral_constant<bool, true> {};
 
-//	"Metaprogramming" - compile-time programming
-//	SFINAE  — substitution failure is not an error
-	template <bool Condition, class T = void> // compile time error is not an error
-	struct enable_if {};
+	template < bool B, class T =  void >
+	struct enable_if { } ;
 
-//	Specialisation enable_if
-	template <class T>
-	struct enable_if<true, T> {
-		typedef T type;
-	};
+	template < class T >
+	struct enable_if < true , T >  {  typedef T type ;  } ;
 }
 

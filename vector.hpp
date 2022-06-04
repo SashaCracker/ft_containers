@@ -32,13 +32,7 @@ namespace ft
 						const allocator_type& alloc = allocator_type()) :
 				_arr(nullptr), _size(n), _capacity(n), _alloc(alloc)
 		{
-			try{
-				_arr = _alloc.allocate(n);
-			}
-			catch (...)
-			{
-				throw std::logic_error("Error: Incorrect size!");
-			}
+			_arr = _alloc.allocate(n);
 			try
 			{
 				for (size_type i = 0; i < n; ++i)
@@ -54,11 +48,11 @@ namespace ft
 		template <class InputIterator>
 		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
 				typename ft::enable_if<!ft::is_integral<InputIterator>::value
-				>::type* = 0) : _size(0), _capacity(0), _alloc(alloc), _arr(nullptr) {
+				>::type* = 0) : _arr(nullptr), _size(0), _capacity(0), _alloc(alloc) {
 			insert(begin(), first, last);
 		}
-		vector(const vector& x) : _size(0), _capacity(0), _alloc(x._alloc),
-		_arr(nullptr)
+		vector(const vector& x) : _arr(nullptr), _size(0), _capacity(0),
+		_alloc(x._alloc)
 		{
 			insert(begin(), x.begin(), x.end());
 		}
@@ -88,57 +82,50 @@ namespace ft
 		const_reverse_iterator rend() const {return reverse_iterator(begin());}
 		size_type size() const {return _size;}
 		size_type max_size() const {return _alloc.max_size();}
-		void resize (size_type n, value_type val = value_type()){
-			if (!val)
-				val = 0;
-			if (n < 0)
-				throw std::logic_error("Error: Incorrect size!");
-			else if (n == _size)
-				return;
-			else if (n < _size)
+		void resize (size_type n, value_type val = value_type())
+		{
+			if (n < _size)
+				for (; _size > n; _size--)
+					_alloc.destroy(&_arr[_size]);
+			else if (n > _size && n < max_size())
 			{
-				erase(&_arr[n], end());
-				_size = n;
-			}
-			else if (n > _capacity)
-			{
-				reserve(n);
-				for (size_type i = _size; i <= n; ++i)
-					_alloc.construct(_arr + i, val);
-				_size = n;
-				_capacity = n;
-			}
-			else
-			{
-				for (size_type i = _size; i <= n; ++i)
-					_alloc.construct(_arr + i, val);
-				_size = n;
+				if (n > _capacity && n <= _capacity * 2)
+					reserve(_capacity * 2);
+				else if (n > _capacity * 2)
+					reserve(n);
+				for (; _size < n; _size++)
+					_alloc.construct(&_arr[_size], val);
 			}
 		}
 		size_type capacity() const { return _capacity; }
 		bool empty() const { return size() == 0;}
 		void reserve (size_type n) {
-			if (n < 0)
-				throw std::logic_error("Error: Incorrect size!");
-			if (n <= _capacity)
-				return;
-			value_type* newarr = _alloc.allocate(n);
-			for (size_type i = 0; i < _size; ++i)
-				newarr[i] = _arr[i];
-			erase(begin(), end());
-			_alloc.deallocate(_arr, _capacity);
-			_arr = newarr;
-			_capacity = n;
+			if (n > _capacity && n < max_size())
+			{
+				pointer temp = _alloc.allocate(n);
+				try
+				{
+					std::uninitialized_copy(_arr, _arr + _size, temp);
+				}
+				catch (...)
+				{
+					_alloc.deallocate(temp, n);
+					throw;
+				}
+				_alloc.deallocate(_arr, _capacity);
+				_arr = temp;
+				_capacity = n;
+			}
 		}
 		reference operator[] (size_type n) { return _arr[n];}
 		const_reference operator[] (size_type n) const {return _arr[n];}
 		reference at (size_type n) {
-			if (n >= _size || n < 0)
+			if (n >= _size)
 				throw std::out_of_range("Error: Out of range");
 			return _arr[n];
 		}
 		const_reference at (size_type n) const {
-			if (n >= _size || n < 0)
+			if (n >= _size)
 				throw std::out_of_range("Error: Out of range");
 			return _arr[n];
 		}
@@ -147,7 +134,8 @@ namespace ft
 		reference back () { return _arr[_size - 1]; }
 		const_reference back () const { return _arr[_size]; }
 		template <class InputIterator>
-		void assign (InputIterator first, InputIterator last){
+		void assign (InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value
+		>::type* = 0){
 			clear();
 			insert(begin(), first, last);
 		}
@@ -156,7 +144,10 @@ namespace ft
 			insert(begin(), n, val);
 		}
 		void push_back (const value_type& val) {
-			reserve(_size + 1);
+			if (_size == _capacity)
+				reserve(_capacity * 2);
+			else
+				reserve(_size + 1);
 			_alloc.construct(_arr + _size, val);
 			++_size;
 		}
@@ -198,7 +189,8 @@ namespace ft
 		}
 		template <class InputIterator>
 		void insert (iterator position, InputIterator first, InputIterator
-		last) {
+		last, typename ft::enable_if<!ft::is_integral<InputIterator>::value
+		>::type* = 0) {
 			if (position > end() || position < begin())
 				throw std::logic_error("Error: Bad position index!");
 			size_type n = static_cast<size_type>(ft::distance(first, last));
@@ -223,7 +215,7 @@ namespace ft
 			size_type distance = static_cast<size_type>(ft::distance(begin(),
 																   position));
 			_alloc.destroy(_arr + distance);
-			for (size_type i = 0; distance + i != _size; ++i) {
+			for (size_type i = 0; distance + i < _size - 1; ++i) {
 				_alloc.construct(_arr + distance + i, _arr[distance + i + 1]);
 				_alloc.destroy(_arr + distance + i + 1);
 			}
@@ -277,7 +269,10 @@ namespace ft
 	{
 		if (lhs.size() != rhs.size())
 			return (false);
-		if (!ft::equal(lhs.begin(), lhs.end()), rhs.begin(), rhs.end())
+		typename ft::vector<T>::const_iterator lb_it = lhs.begin();
+		typename ft::vector<T>::const_iterator le_it = lhs.end();
+		typename ft::vector<T>::const_iterator rb_it = rhs.begin();
+		if (!ft::equal(lb_it, le_it, rb_it))
 			return (false);
 		return (true);
 	}
@@ -308,7 +303,6 @@ namespace ft
 	}
 	template <class T, class Alloc>
 	void swap (vector<T,Alloc>& x, vector<T,Alloc>& y) { x.swap(y); }
-
 }
 
 #endif
