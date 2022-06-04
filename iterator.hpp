@@ -61,12 +61,12 @@ namespace ft {
     template <class Iterator>
     class reverse_iterator {
     public:
-		typedef Iterator									 iterator_type;
-        typedef typename iterator_traits::value_type         value_type;
-        typedef typename iterator_traits::difference_type    difference_type;
-        typedef typename iterator_traits::pointer            pointer;
-        typedef typename iterator_traits::reference          reference;
-        typedef typename iterator_traits::iterator_category  iterator_category;
+		typedef Iterator														iterator_type;
+        typedef typename ft::iterator_traits<iterator_type>::value_type         value_type;
+        typedef typename ft::iterator_traits<iterator_type>::difference_type    difference_type;
+        typedef typename ft::iterator_traits<iterator_type>::pointer            pointer;
+        typedef typename ft::iterator_traits<iterator_type>::reference          reference;
+        typedef typename ft::iterator_traits<iterator_type>::iterator_category  iterator_category;
 
         reverse_iterator() {}
 
@@ -197,8 +197,8 @@ namespace ft {
 		typedef typename ft::iterator<ft::random_access_iterator_tag, T>::iterator_category iterator_category;
 		typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type        value_type;
 		typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type   difference_type;
-		typedef T																			*pointer;
-		typedef T																			&reference;
+		typedef T*																			pointer;
+		typedef T&																			reference;
 
 		random_access_iterator() {}
 		random_access_iterator(pointer position): _position(position) {}

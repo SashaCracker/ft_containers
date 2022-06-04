@@ -4,6 +4,8 @@
 #include "iterator.hpp"
 #include "utils.hpp"
 #include <iostream>
+#include <memory>
+#include <stdexcept>
 
 namespace ft
 {
@@ -17,30 +19,42 @@ namespace ft
 		typedef typename allocator_type::const_reference				const_reference;
 		typedef typename allocator_type::pointer						pointer;
 		typedef typename allocator_type::const_pointer					const_pointer;
-		typedef ft::random_access_iterator<T*>							iterator;
-		typedef ft::random_access_iterator<const T*>					const_iterator;
+		typedef ft::random_access_iterator<value_type>					iterator;
+		typedef ft::random_access_iterator<const value_type>			const_iterator;
 		typedef ft::reverse_iterator<iterator>							reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 		typedef typename iterator_traits<iterator>::difference_type		difference_type;
 		typedef size_t													size_type;
 
 		explicit vector(const allocator_type& alloc = allocator_type()) :
-		_size(0), _capacity(0), _alloc(alloc), _arr(nullptr) {}
+				_arr(nullptr), _size(0), _capacity(0), _alloc(alloc) {}
 		explicit vector(size_type n, const value_type& val = value_type(),
 						const allocator_type& alloc = allocator_type()) :
-						_size(n), _capacity(n), _alloc(alloc), _arr(nullptr)
+				_arr(nullptr), _size(n), _capacity(n), _alloc(alloc)
 		{
-			if (n < 0)
+			try{
+				_arr = _alloc.allocate(n);
+			}
+			catch (...)
+			{
 				throw std::logic_error("Error: Incorrect size!");
-			reserve(n);
-			for (size_type i = 0; i < n; ++i)
-				_alloc.construct(_arr + i, val);
+			}
+			try
+			{
+				for (size_type i = 0; i < n; ++i)
+					_alloc.construct(_arr + i, val);
+			}
+			catch (...)
+			{
+				_alloc.deallocate(_arr, n);
+				_arr = nullptr;
+				throw std::logic_error("Error: Constructor failed!");
+			}
 		}
 		template <class InputIterator>
-		vector (InputIterator first, InputIterator last, const
-		allocator_type& alloc = allocator_type()) : _size(0), _capacity(0),
-		_alloc(alloc), _arr(nullptr)
-		{
+		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value
+				>::type* = 0) : _size(0), _capacity(0), _alloc(alloc), _arr(nullptr) {
 			insert(begin(), first, last);
 		}
 		vector(const vector& x) : _size(0), _capacity(0), _alloc(x._alloc),
@@ -73,7 +87,7 @@ namespace ft
 		reverse_iterator rend() {return reverse_iterator(begin());}
 		const_reverse_iterator rend() const {return reverse_iterator(begin());}
 		size_type size() const {return _size;}
-		size_type max_size() const {return _allocator.max_size();}
+		size_type max_size() const {return _alloc.max_size();}
 		void resize (size_type n, value_type val = value_type()){
 			if (!val)
 				val = 0;
@@ -83,7 +97,7 @@ namespace ft
 				return;
 			else if (n < _size)
 			{
-				erase(&_arr[n]; end());
+				erase(&_arr[n], end());
 				_size = n;
 			}
 			else if (n > _capacity)
@@ -130,7 +144,7 @@ namespace ft
 		}
 		reference front (){ return _arr[0]; }
 		const_reference front () const {return _arr[0]; }
-		reference back () { return _arr[_size]; }
+		reference back () { return _arr[_size - 1]; }
 		const_reference back () const { return _arr[_size]; }
 		template <class InputIterator>
 		void assign (InputIterator first, InputIterator last){
@@ -191,15 +205,17 @@ namespace ft
 			size_type distance = static_cast<size_type>(ft::distance(begin(), position));
 			if (_capacity < _size + n)
 				reserve(_size + n);
-			for (size_type i = 0; _size - i != distance; ++i){
+			for (size_type i = 0; _size - i != distance; ++i)
+			{
 				_alloc.construct(_arr + _size - 1 - i + n, _arr[_size - i - 1]);
 				_alloc.destroy(_arr + _size - i - 1);
 			}
-			for (size_type i = 0; i < n; i++) {
-				_alloc.construct(_arr + distance + i, tmp[i]);
-				_alloc.destroy(tmp + i);
-				_size++;
+			for (size_type i = 0; i < n; i++)
+			{
+				_alloc.construct(_arr + distance + i, *first);
+				++first;
 			}
+			_size += n;
 		}
 		iterator erase (iterator position) {
 			if (_size == 0)
@@ -292,6 +308,7 @@ namespace ft
 	}
 	template <class T, class Alloc>
 	void swap (vector<T,Alloc>& x, vector<T,Alloc>& y) { x.swap(y); }
+
 }
 
 #endif
