@@ -6,6 +6,7 @@ int main()
 {
 	try
 	{
+		std::cout << std::endl;
 		std::cout << "DEFAULT CONSTRUCTOR | SIZE() | CAPACITY() CHECK : " <<
 		std::endl;
 
@@ -92,7 +93,6 @@ int main()
 					  << std::endl;
 		else
 			std::cout << "								NOK!";
-		std::cout << std::endl;
 
 		std::cout << "STRING vector: " << std::endl;
 		std::vector<std::string> std_vector3(5, "bla");
@@ -128,7 +128,6 @@ int main()
 					  << std::endl;
 		else
 			std::cout << "					NOK!";
-		std::cout << std::endl;
 
 		std::cout << "INT with no value: " << std::endl;
 		std::vector<int> std_vector4(5);
@@ -279,7 +278,7 @@ int main()
 		std::cout << std::endl;
 
 		std::cout << "BEGIN() | END | RBEGIN() | REND() | MAX_SIZE() | "
-					 "PUSH_BACK() CHECK: "
+					 "PUSH_BACK() | POP_BACK CHECK: "
 		<< std::endl;
 		std::vector<int> std_vector9;
 		std_vector9.push_back(1);
@@ -287,12 +286,14 @@ int main()
 		std_vector9.push_back(3);
 		std_vector9.push_back(4);
 		std_vector9.push_back(5);
+		std_vector9.pop_back();
 		ft::vector<int> ft_vector9;
 		ft_vector9.push_back(1);
 		ft_vector9.push_back(2);
 		ft_vector9.push_back(3);
 		ft_vector9.push_back(4);
 		ft_vector9.push_back(5);
+		ft_vector9.pop_back();
 		std_size = std_vector9.size();
 		ft_size = ft_vector9.size();
 		std_capacity = std_vector9.capacity();
@@ -616,6 +617,425 @@ int main()
 		std::cout << std::endl;
 
 		std::cout << "RESERVE() CHECK: " << std::endl;
+		std::cout << "N < CAPACITY" << std::endl;
+		std_vector2.reserve(3);
+		ft_vector2.reserve(3);
+		std_size = std_vector2.size();
+		ft_size = ft_vector2.size();
+		std_capacity = std_vector2.capacity();
+		ft_capacity = ft_vector2.capacity();
+		std::cout << "std_size = " << std_size << "   ft_size = " << ft_size;
+		if (std_size == ft_size)
+			std::cout << "										OK =)"
+					  << std::endl;
+		else
+			std::cout << "										NOK!"
+					  << std::endl;
+		std::cout << "std_capacity = " << std_capacity << "   ft_capacity = " <<
+				  ft_capacity;
+		if (std_capacity == ft_capacity)
+			std::cout << "									OK =)"
+					  << std::endl;
+		else
+			std::cout << "									NOK!"
+					  << std::endl;
+		std::cout << "std_vector: ";
+		for (size_t i = 0; i < std_vector2.size(); ++i)
+			std::cout << std_vector2[i] << " ";
+		std::cout << "	ft_vector: ";
+		for (size_t i = 0; i < ft_vector2.size(); ++i)
+			std::cout << ft_vector2[i] << " ";
+		if (std_vector2.size() == ft_vector2.size() && std::equal(&(*std_vector2
+				.begin()), &(*std_vector2.end()), &(*ft_vector2.begin())))
+			std::cout << "								OK =)"
+					  << std::endl;
+		else
+			std::cout << "								NOK!";
+
+		std::cout << "N > CAPACITY && N < MAX_SIZE " << std::endl;
+		std_vector2.reserve(100);
+		ft_vector2.reserve(100);
+		std_size = std_vector2.size();
+		ft_size = ft_vector2.size();
+		std_capacity = std_vector2.capacity();
+		ft_capacity = ft_vector2.capacity();
+		std::cout << "std_size = " << std_size << "   ft_size = " << ft_size;
+		if (std_size == ft_size)
+			std::cout << "										OK =)"
+					  << std::endl;
+		else
+			std::cout << "										NOK!"
+					  << std::endl;
+		std::cout << "std_capacity = " << std_capacity << "   ft_capacity = " <<
+				  ft_capacity;
+		if (std_capacity == ft_capacity)
+			std::cout << "									OK =)"
+					  << std::endl;
+		else
+			std::cout << "									NOK!"
+					  << std::endl;
+		std::cout << "std_vector: ";
+		for (size_t i = 0; i < std_vector2.size(); ++i)
+			std::cout << std_vector2[i] << " ";
+		std::cout << "	ft_vector: ";
+		for (size_t i = 0; i < ft_vector2.size(); ++i)
+			std::cout << ft_vector2[i] << " ";
+		if (std_vector2.size() == ft_vector2.size() && std::equal(&(*std_vector2
+				.begin()), &(*std_vector2.end()), &(*ft_vector2.begin())))
+			std::cout << "								OK =)"
+					  << std::endl;
+		else
+			std::cout << "								NOK!";
+		std::cout << std::endl;
+
+		std::cout << "OPERATOR[] CHECK : " << std::endl;
+		std::cout << "First element: " << std::endl;
+		std::cout << "std_vector[0] = " << std_vector9[0];
+		std::cout << "	ft_vector[0] = " << ft_vector9[0];
+		if (std_vector9[0] == ft_vector9[0])
+			std::cout << "								OK =)"
+					  << std::endl;
+		else
+			std::cout << "								NOK!";
+
+		std::cout << "Last element: " << std::endl;
+		std::cout << "std_vector[size - 1] = " << std_vector9[std_vector9.size
+		() - 1];
+		std::cout << "	ft_vector[size - 1] = " << ft_vector9[ft_vector9.size
+		() - 1];
+		if (std_vector9[std_vector9.size() - 1] == ft_vector9[ft_vector9.size
+		() - 1])
+			std::cout << "							OK =)" << std::endl;
+		else
+			std::cout << "							NOK!";
+
+		std::cout << "Inner element: " << std::endl;
+		std::cout << "std_vector[n] = " << std_vector9[3];
+		std::cout << "	ft_vector[n] = " << ft_vector9[3];
+		if (std_vector9[3] == ft_vector9[3])
+			std::cout << "								OK =)" << std::endl;
+		else
+			std::cout << "								NOK!";
+
+		std::cout << "Change Inner element: " << std::endl;
+		std_vector9[3] = 10;
+		ft_vector9[3] = 10;
+		std::cout << "std_vector[n] = " << std_vector9[3];
+		std::cout << "	ft_vector[n] = " << ft_vector9[3];
+		if (std_vector9[3] == ft_vector9[3])
+			std::cout << "								OK =)" << std::endl;
+		else
+			std::cout << "								NOK!";
+		std::cout << std::endl;
+
+		std::cout << "AT() | FRONT() | BACK() CHECK : " << std::endl;
+		std::cout << "N = front() element: " << std::endl;
+		std::cout << "std_vector.at(std_vector.front()) = " << std_vector9.at(std_vector9.front());
+		std::cout << "	ft_vector.at(ft_vector.front()) = " << ft_vector9.at
+		(ft_vector9.front());
+		if (std_vector9.at(std_vector9.front()) == ft_vector9.at(ft_vector9
+		.front()))
+			std::cout << "				OK =)"
+					  << std::endl;
+		else
+			std::cout << "				NOK!";
+
+		std::cout << "N = back() element: " << std::endl;
+		std::cout << "std_vector.at(std_vector.back()) = " << std_vector9.at
+		(std_vector9.back());
+		std::cout << "	ft_vector.at(ft_vector.back()) = " << ft_vector9.at
+		(ft_vector9.back());
+		if (std_vector9.at(std_vector9.back()) == ft_vector9.at(ft_vector9
+		.back()))
+			std::cout << "				OK =)" << std::endl;
+		else
+			std::cout << "				NOK!";
+
+		std::cout << "Inner element: " << std::endl;
+		std::cout << "std_vector.at(n) = " << std_vector9.at(3);
+		std::cout << "	ft_vector.at(n) = " << ft_vector9.at(3);
+		if (std_vector9.at(3) == ft_vector9.at(3))
+			std::cout << "								OK =)" << std::endl;
+		else
+			std::cout << "								NOK!";
+
+		std::cout << "Change Inner element: " << std::endl;
+		std_vector9.at(3) = 50;
+		ft_vector9.at(3) = 50;
+		std::cout << "std_vector.at(n) = " << std_vector9.at(3);
+		std::cout << "	ft_vector.at(n) = " << ft_vector9.at(3);
+		if (std_vector9.at(3) == ft_vector9.at(3))
+			std::cout << "								OK =)" << std::endl;
+		else
+			std::cout << "								NOK!";
+
+//		std::cout << "Not valid element: " << std::endl;
+//		ft_vector9.at(100);
+//		std_vector9.at(100);
+//		std::cout << "std_vector.at(n) = " << std_vector9.at(100);
+//		std::cout << "	ft_vector.at(n) = " << ft_vector9.at(100);
+//		if (std_vector9.at(100) == ft_vector9.at(100))
+//			std::cout << "								OK =)" << std::endl;
+//		else
+//			std::cout << "								NOK!";
+		std::cout << std::endl;
+
+		std::cout << "ASSIGN() CHECK :" << std::endl;
+		std::cout << "New vectors : " << std::endl;
+		std::vector<int> std_vector10;
+		std_vector10.assign(10, 6);
+		ft::vector<int> ft_vector10;
+		ft_vector10.assign(10, 6);
+		std_size = std_vector10.size();
+		ft_size = ft_vector10.size();
+		std_capacity = std_vector10.capacity();
+		ft_capacity = ft_vector10.capacity();
+		std::cout << "std_size = " << std_size << "   ft_size = " << ft_size;
+		if (std_size == ft_size)
+			std::cout << "										OK =)"
+					  << std::endl;
+		else
+			std::cout << "										NOK!"
+					  << std::endl;
+		std::cout << "std_capacity = " << std_capacity << "   ft_capacity = " <<
+				  ft_capacity;
+		if (std_capacity == ft_capacity)
+			std::cout << "									OK =)"
+					  << std::endl;
+		else
+			std::cout << "									NOK!"
+					  << std::endl;
+		std::cout << "std_vector: ";
+		for (size_t i = 0; i < std_vector10.size(); ++i)
+			std::cout << std_vector10[i] << " ";
+		std::cout << "	ft_vector: ";
+		for (size_t i = 0; i < ft_vector10.size(); ++i)
+			std::cout << ft_vector10[i] << " ";
+		if (std_vector10.size() == ft_vector10.size() && std::equal(&
+		(*std_vector10.begin()), &(*std_vector10.end()), &(*ft_vector10.begin
+		())))
+			std::cout << "					OK =)"
+					  << std::endl;
+		else
+			std::cout << "					NOK!";
+
+		std::cout << "Existed vectors : " << std::endl;
+		std_vector2.assign(10, 6);
+		ft_vector2.assign(10, 6);
+		std_size = std_vector2.size();
+		ft_size = ft_vector2.size();
+		std_capacity = std_vector2.capacity();
+		ft_capacity = ft_vector2.capacity();
+		std::cout << "std_size = " << std_size << "   ft_size = " << ft_size;
+		if (std_size == ft_size)
+			std::cout << "										OK =)"
+					  << std::endl;
+		else
+			std::cout << "										NOK!"
+					  << std::endl;
+		std::cout << "std_capacity = " << std_capacity << "   ft_capacity = " <<
+				  ft_capacity;
+		if (std_capacity == ft_capacity)
+			std::cout << "									OK =)"
+					  << std::endl;
+		else
+			std::cout << "									NOK!"
+					  << std::endl;
+		std::cout << "std_vector: ";
+		for (size_t i = 0; i < std_vector2.size(); ++i)
+			std::cout << std_vector2[i] << " ";
+		std::cout << "	ft_vector: ";
+		for (size_t i = 0; i < ft_vector2.size(); ++i)
+			std::cout << ft_vector2[i] << " ";
+		if (std_vector2.size() == ft_vector2.size() && std::equal(&
+		(*std_vector2.begin()), &(*std_vector2.end()), &(*ft_vector2.begin())))
+			std::cout << "					OK =)"
+					  << std::endl;
+		else
+			std::cout << "					NOK!";
+
+		std::cout << "Assigning using the iterators : " << std::endl;
+		std_vector2.assign(std_vector4.begin(), std_vector4.end());
+		ft_vector2.assign(ft_vector4.begin(), ft_vector4.end());
+		std_size = std_vector2.size();
+		ft_size = ft_vector2.size();
+		std_capacity = std_vector2.capacity();
+		ft_capacity = ft_vector2.capacity();
+		std::cout << "std_size = " << std_size << "   ft_size = " << ft_size;
+		if (std_size == ft_size)
+			std::cout << "										OK =)"
+					  << std::endl;
+		else
+			std::cout << "										NOK!"
+					  << std::endl;
+		std::cout << "std_capacity = " << std_capacity << "   ft_capacity = " <<
+				  ft_capacity;
+		if (std_capacity == ft_capacity)
+			std::cout << "									OK =)"
+					  << std::endl;
+		else
+			std::cout << "									NOK!"
+					  << std::endl;
+		std::cout << "std_vector: ";
+		for (size_t i = 0; i < std_vector2.size(); ++i)
+			std::cout << std_vector2[i] << " ";
+		std::cout << "	ft_vector: ";
+		for (size_t i = 0; i < ft_vector2.size(); ++i)
+			std::cout << ft_vector2[i] << " ";
+		if (std_vector2.size() == ft_vector2.size() && std::equal(&
+																		  (*std_vector2.begin()), &(*std_vector2.end()), &(*ft_vector2.begin())))
+			std::cout << "								OK =)"
+					  << std::endl;
+		else
+			std::cout << "								NOK!";
+		std::cout << std::endl;
+
+		std::cout << "INSERT(position, val) CHECK : " << std::endl;
+		std::cout << "Insert position = 1 element : " << std::endl;
+		std_vector2.insert(std_vector2.begin(), 7);
+		ft_vector2.insert(ft_vector2.begin(), 7);
+		std_size = std_vector2.size();
+		ft_size = ft_vector2.size();
+		std_capacity = std_vector2.capacity();
+		ft_capacity = ft_vector2.capacity();
+		std::cout << "std_size = " << std_size << "   ft_size = " << ft_size;
+		if (std_size == ft_size)
+			std::cout << "										OK =)"
+					  << std::endl;
+		else
+			std::cout << "										NOK!"
+					  << std::endl;
+		std::cout << "std_capacity = " << std_capacity << "   ft_capacity = " <<
+				  ft_capacity;
+		if (std_capacity == ft_capacity)
+			std::cout << "									OK =)"
+					  << std::endl;
+		else
+			std::cout << "									NOK!"
+					  << std::endl;
+		std::cout << "std_vector: ";
+		for (size_t i = 0; i < std_vector2.size(); ++i)
+			std::cout << std_vector2[i] << " ";
+		std::cout << "	ft_vector: ";
+		for (size_t i = 0; i < ft_vector2.size(); ++i)
+			std::cout << ft_vector2[i] << " ";
+		if (std_vector2.size() == ft_vector2.size() && std::equal(&
+																		  (*std_vector2.begin()), &(*std_vector2.end()), &(*ft_vector2.begin())))
+			std::cout << "							OK =)"
+					  << std::endl;
+		else
+			std::cout << "							NOK!";
+
+		std::cout << "Insert position = some inner element : " << std::endl;
+		std_vector2.insert(std_vector2.begin() + 5, 7);
+		ft_vector2.insert(ft_vector2.begin() + 5, 7);
+		std_size = std_vector2.size();
+		ft_size = ft_vector2.size();
+		std_capacity = std_vector2.capacity();
+		ft_capacity = ft_vector2.capacity();
+		std::cout << "std_size = " << std_size << "   ft_size = " << ft_size;
+		if (std_size == ft_size)
+			std::cout << "										OK =)"
+					  << std::endl;
+		else
+			std::cout << "										NOK!"
+					  << std::endl;
+		std::cout << "std_capacity = " << std_capacity << "   ft_capacity = " <<
+				  ft_capacity;
+		if (std_capacity == ft_capacity)
+			std::cout << "									OK =)"
+					  << std::endl;
+		else
+			std::cout << "									NOK!"
+					  << std::endl;
+		std::cout << "std_vector: ";
+		for (size_t i = 0; i < std_vector2.size(); ++i)
+			std::cout << std_vector2[i] << " ";
+		std::cout << "	ft_vector: ";
+		for (size_t i = 0; i < ft_vector2.size(); ++i)
+			std::cout << ft_vector2[i] << " ";
+		if (std_vector2.size() == ft_vector2.size() && std::equal(&
+																		  (*std_vector2.begin()), &(*std_vector2.end()), &(*ft_vector2.begin())))
+			std::cout << "						OK =)"
+					  << std::endl;
+		else
+			std::cout << "						NOK!";
+
+		std::cout << "Insert when size = capacity : " << std::endl;
+		std_vector2.assign(100, 1);
+		std_vector2.insert(std_vector2.end() - 50, 50);
+		ft_vector2.assign(100, 1);
+		ft_vector2.insert(ft_vector2.end() - 50, 50);
+		std_size = std_vector2.size();
+		ft_size = ft_vector2.size();
+		std_capacity = std_vector2.capacity();
+		ft_capacity = ft_vector2.capacity();
+		std::cout << "std_size = " << std_size << "   ft_size = " << ft_size;
+		if (std_size == ft_size)
+			std::cout << "										OK =)"
+					  << std::endl;
+		else
+			std::cout << "										NOK!"
+					  << std::endl;
+		std::cout << "std_capacity = " << std_capacity << "   ft_capacity = " <<
+				  ft_capacity;
+		if (std_capacity == ft_capacity)
+			std::cout << "									OK =)"
+					  << std::endl;
+		else
+			std::cout << "									NOK!"
+					  << std::endl;
+		std::cout << "If std_vector and ft_vector are equal ?  ";
+		if (std_vector2.size() == ft_vector2.size() && std::equal(&
+																		  (*std_vector2.begin()), &(*std_vector2.end()), &(*ft_vector2.begin())))
+			std::cout << "								OK =)"
+					  << std::endl;
+		else
+			std::cout << "								NOK!";
+
+		std::cout << "Insert when *vector = nullptr: " << std::endl;
+		std::vector<int> std_vector11;
+		ft::vector<int> ft_vector11;
+		std_vector11.insert(std_vector11.begin(), 50);
+		ft_vector11.insert(ft_vector11.begin(), 50);
+		std_size = std_vector11.size();
+		ft_size = ft_vector11.size();
+		std_capacity = std_vector11.capacity();
+		ft_capacity = ft_vector11.capacity();
+		std::cout << "std_size = " << std_size << "   ft_size = " << ft_size;
+		if (std_size == ft_size)
+			std::cout << "										OK =)"
+					  << std::endl;
+		else
+			std::cout << "										NOK!"
+					  << std::endl;
+		std::cout << "std_capacity = " << std_capacity << "   ft_capacity = " <<
+				  ft_capacity;
+		if (std_capacity == ft_capacity)
+			std::cout << "									OK =)"
+					  << std::endl;
+		else
+			std::cout << "									NOK!"
+					  << std::endl;
+		std::cout << "std_vector: ";
+		for (size_t i = 0; i < std_vector11.size(); ++i)
+			std::cout << std_vector11[i] << " ";
+		std::cout << "	ft_vector: ";
+		for (size_t i = 0; i < ft_vector11.size(); ++i)
+			std::cout << ft_vector11[i] << " ";
+		if (std_vector11.size() == ft_vector11.size() && std::equal(&
+		(*std_vector11.begin()), &(*std_vector11.end()), &(*ft_vector11.begin())))
+			std::cout << "								OK =)"
+					  << std::endl;
+		else
+			std::cout << "								NOK!";
+
+
+
+
+
+
+
 
 
 

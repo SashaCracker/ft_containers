@@ -121,12 +121,12 @@ namespace ft
 		const_reference operator[] (size_type n) const {return _arr[n];}
 		reference at (size_type n) {
 			if (n >= _size)
-				throw std::out_of_range("Error: Out of range");
+				throw std::out_of_range("Out of range");
 			return _arr[n];
 		}
 		const_reference at (size_type n) const {
 			if (n >= _size)
-				throw std::out_of_range("Error: Out of range");
+				throw std::out_of_range("Out of range");
 			return _arr[n];
 		}
 		reference front (){ return _arr[0]; }
@@ -158,11 +158,13 @@ namespace ft
 			}
 		}
 		iterator insert (iterator position, const value_type& val) {
-			if (position > end() || position < begin())
-				throw std::logic_error("Error: Bad position index!/n");
+			if (position >= end() || position < begin())
+				throw std::logic_error("Bad position index!");
 			size_type distance = static_cast<size_type>(ft::distance(begin(),
 																   position));
-			if (_capacity < _size + 1)
+			if (_capacity == _size)
+				reserve(_capacity * 2);
+			else if (_capacity < _size + 1)
 				reserve(_size + 1);
 			for (size_type i = 0; distance + i < _size; ++i) {
 				_alloc.construct(_arr + _size - i, _arr[_size - i - 1]);
@@ -174,7 +176,7 @@ namespace ft
 		}
 		void insert (iterator position, size_type n, const value_type& val) {
 			if (position > end() || position < begin())
-				throw std::logic_error("Error: Bad position index!");
+				throw std::logic_error("Bad position index!");
 			size_type distance = static_cast<size_type>(ft::distance(begin(),position));
 			if (_capacity < _size + n)
 				reserve(_size + n);
