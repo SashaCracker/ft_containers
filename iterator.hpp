@@ -52,8 +52,11 @@ namespace ft {
 	distance (InputIterator first, InputIterator last)
 	{
 		size_t distance = 0;
-		for (; first != last; first++)
+		while (first != last)
+		{
+			first++;
 			distance++;
+		}
 		return distance;
 	}
 

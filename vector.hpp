@@ -132,7 +132,7 @@ namespace ft
 		reference front (){ return _arr[0]; }
 		const_reference front () const {return _arr[0]; }
 		reference back () { return _arr[_size - 1]; }
-		const_reference back () const { return _arr[_size]; }
+		const_reference back () const { return _arr[_size - 1]; }
 		template <class InputIterator>
 		void assign (InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value
 		>::type* = 0){
@@ -144,12 +144,12 @@ namespace ft
 			insert(begin(), n, val);
 		}
 		void push_back (const value_type& val) {
-			if (_size == _capacity)
+			if (!_size)
+				reserve(1);
+			else if (_size == _capacity)
 				reserve(_capacity * 2);
-			else
-				reserve(_size + 1);
-			_alloc.construct(_arr + _size, val);
-			++_size;
+			_alloc.construct(&(*end()), val);
+			_size++;
 		}
 		void pop_back() {
 			if (_size) {
@@ -164,7 +164,7 @@ namespace ft
 																   position));
 			if (_capacity < _size + 1)
 				reserve(_size + 1);
-			for (size_type i = 0; _size - i != distance; ++i) {
+			for (size_type i = 0; distance + i < _size; ++i) {
 				_alloc.construct(_arr + _size - i, _arr[_size - i - 1]);
 				_alloc.destroy(_arr + _size - i - 1);
 			}
@@ -215,9 +215,11 @@ namespace ft
 			size_type distance = static_cast<size_type>(ft::distance(begin(),
 																   position));
 			_alloc.destroy(_arr + distance);
-			for (size_type i = 0; distance + i < _size - 1; ++i) {
+			size_type i = 0;
+			while (distance + i != _size - 1) {
 				_alloc.construct(_arr + distance + i, _arr[distance + i + 1]);
 				_alloc.destroy(_arr + distance + i + 1);
+				++i;
 			}
 			_size--;
 			return begin() + distance;
@@ -228,12 +230,18 @@ namespace ft
 			size_type n = static_cast<size_type>(ft::distance(first, last));
 			size_type distance = static_cast<size_type>(ft::distance(begin(),
 																   first));
-			for (size_type i = 0; i != n; ++i)
+			size_type i = 0;
+			while (i != n)
+			{
 				_alloc.destroy(_arr + distance + i);
+				++i;
+			}
 			_size -= n;
-			for (size_type i = 0; distance + i != _size; ++i) {
+			i = 0;
+			while (distance + i != _size) {
 				_alloc.construct(_arr + distance + i, _arr[distance + i + n]);
 				_alloc.destroy(_arr + distance + i + n);
+				++i;
 			}
 			return begin() + distance;
 		}
@@ -252,8 +260,12 @@ namespace ft
 			x._capacity = tmp_capacity;
 		}
 		void clear() {
-			for (size_type i = 0; i != _size; ++i)
+			size_type i = 0;
+			while (i != _size)
+			{
 				_alloc.destroy(_arr + i);
+				++i;
+			}
 			_size = 0;
 		}
 		allocator_type get_allocator() const { return _alloc; }
