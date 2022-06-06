@@ -158,11 +158,11 @@ namespace ft
 			}
 		}
 		iterator insert (iterator position, const value_type& val) {
-			if (position >= end() || position < begin())
+			if (position > end() || position < begin())
 				throw std::logic_error("Bad position index!");
 			size_type distance = static_cast<size_type>(ft::distance(begin(),
 																   position));
-			if (_capacity == _size)
+			if (_capacity == _size && _capacity)
 				reserve(_capacity * 2);
 			else if (_capacity < _size + 1)
 				reserve(_size + 1);
@@ -178,10 +178,13 @@ namespace ft
 			if (position > end() || position < begin())
 				throw std::logic_error("Bad position index!");
 			size_type distance = static_cast<size_type>(ft::distance(begin(),position));
+			if (_capacity == _size && _capacity)
+				reserve(_capacity * 2);
 			if (_capacity < _size + n)
 				reserve(_size + n);
 			for (size_type i = 0; _size - i != distance; ++i) {
-				_alloc.construct(_arr + _size - 1 - i + n, _arr[_size - i - 1]);
+				_alloc.construct(_arr + _size - 1 - i + n, _arr[_size - i -
+				1]);
 				_alloc.destroy(_arr + _size - i - 1);
 			}
 			for (size_type i = 0; i < n; i++) {
@@ -193,25 +196,41 @@ namespace ft
 		void insert (iterator position, InputIterator first, InputIterator
 		last, typename ft::enable_if<!ft::is_integral<InputIterator>::value
 		>::type* = 0) {
-			if (position > end() || position < begin())
-				throw std::logic_error("Error: Bad position index!");
 			size_type n = static_cast<size_type>(ft::distance(first, last));
 			size_type distance = static_cast<size_type>(ft::distance(begin(), position));
+			if (position > end() || position < begin())
+				throw std::logic_error("Bad position index!");
+			pointer tmp = _alloc.allocate(n);
+			try {
+				for (size_type i = 0; i < n; i++)
+					_alloc.construct(tmp + i, *first++);
+			}
+			catch(...) {
+				for (size_type i = 0; tmp + i != 0 && i < n; i++) {
+					_alloc.destroy(tmp + i);
+				}
+				_alloc.deallocate(tmp, n);
+				throw std::logic_error("Error: Common error");
+			}
+			if (_capacity == _size && _capacity)
+				reserve(_capacity * 2);
 			if (_capacity < _size + n)
 				reserve(_size + n);
-			for (size_type i = 0; _size - i != distance; ++i)
-			{
-				_alloc.construct(_arr + _size - 1 - i + n, _arr[_size - i - 1]);
+			for (size_type i = 0; _size - i != distance; ++i){
+				_alloc.construct(_arr + _size - 1 - i + n, _arr[_size - i -
+				1]);
 				_alloc.destroy(_arr + _size - i - 1);
 			}
-			for (size_type i = 0; i < n; i++)
-			{
-				_alloc.construct(_arr + distance + i, *first);
-				++first;
+			for (size_type i = 0; i < n; i++) {
+				_alloc.construct(_arr + distance + i, tmp[i]);
+				_alloc.destroy(tmp + i);
+				_size++;
 			}
-			_size += n;
+			_alloc.deallocate(tmp, n);
 		}
 		iterator erase (iterator position) {
+			if (position > end() || position < begin())
+				throw std::logic_error("Bad position index!");
 			if (_size == 0)
 				return end();
 			size_type distance = static_cast<size_type>(ft::distance(begin(),
@@ -227,6 +246,8 @@ namespace ft
 			return begin() + distance;
 		}
 		iterator erase (iterator first, iterator last) {
+			if (first > end() || first < begin() || last > end() || last < begin())
+				throw std::logic_error("Bad position index!");
 			if (_size == 0)
 				return end();
 			size_type n = static_cast<size_type>(ft::distance(first, last));
