@@ -19,8 +19,9 @@ namespace ft
 		typedef typename allocator_type::const_reference				const_reference;
 		typedef typename allocator_type::pointer						pointer;
 		typedef typename allocator_type::const_pointer					const_pointer;
-		typedef ft::random_access_iterator<value_type>					iterator;
-		typedef ft::random_access_iterator<const value_type>			const_iterator;
+		typedef ft::random_access_iterator<pointer>					iterator;
+		typedef ft::random_access_iterator<const pointer>
+		        const_iterator;
 		typedef ft::reverse_iterator<iterator>							reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 		typedef typename iterator_traits<iterator>::difference_type		difference_type;
@@ -35,8 +36,12 @@ namespace ft
 			_arr = _alloc.allocate(n);
 			try
 			{
-				for (size_type i = 0; i < n; ++i)
+				size_type i = 0;
+				while (i < n)
+				{
 					_alloc.construct(_arr + i, val);
+					++i;
+				}
 			}
 			catch (...)
 			{
@@ -269,18 +274,21 @@ namespace ft
 			return begin() + distance;
 		}
 		void swap (vector& x) {
-			allocator_type tmp_alloc = _alloc;
-			value_type* tmp_arr = _arr;
-			size_type tmp_size = _size;
-			size_type tmp_capacity = _capacity;
-			_alloc = x._alloc;
-			_arr = x._arr;
-			_size = x._size;
-			_capacity = x._capacity;
-			x._alloc = tmp_alloc;
-			x._arr = tmp_arr;
-			x._size = tmp_size;
-			x._capacity = tmp_capacity;
+			ft::swap(_arr, x._arr);
+			ft::swap(_size, x._size);
+			ft::swap(_capacity, x._capacity);
+//			allocator_type tmp_alloc = _alloc;
+//			value_type* tmp_arr = _arr;
+//			size_type tmp_size = _size;
+//			size_type tmp_capacity = _capacity;
+//			_alloc = x._alloc;
+//			_arr = x._arr;
+//			_size = x._size;
+//			_capacity = x._capacity;
+//			x._alloc = tmp_alloc;
+//			x._arr = tmp_arr;
+//			x._size = tmp_size;
+//			x._capacity = tmp_capacity;
 		}
 		void clear() {
 			size_type i = 0;
@@ -336,8 +344,8 @@ namespace ft
 	{
 		return !(lhs < rhs);
 	}
-	template <class T, class Alloc>
-	void swap (vector<T,Alloc>& x, vector<T,Alloc>& y) { x.swap(y); }
-}
 
+}
 #endif
+
+

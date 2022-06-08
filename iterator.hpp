@@ -14,11 +14,11 @@ namespace ft {
 		typedef Reference 	reference;
 		typedef Category 	iterator_category;
 	};
-	struct input_iterator_tag {};
-	struct output_iterator_tag {};
-	struct forward_iterator_tag : public input_iterator_tag, public output_iterator_tag {};
-	struct bidirectional_iterator_tag : public forward_iterator_tag {};
-	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
+//	struct input_iterator_tag {};
+//	struct output_iterator_tag {};
+//	struct forward_iterator_tag : public input_iterator_tag, public output_iterator_tag {};
+//	struct bidirectional_iterator_tag : public forward_iterator_tag {};
+//	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
 	template <class Iterator>
 	struct iterator_traits {
@@ -191,14 +191,17 @@ namespace ft {
 	//--------------------------RANDOM_ACCESS_ITERATOR-----------------------
 
 	template <typename T>
-	class random_access_iterator: ft::iterator<ft::random_access_iterator_tag, T>
+	class random_access_iterator :
+			ft::iterator<std::random_access_iterator_tag, T>
 	{
 	public:
-		typedef typename ft::iterator<ft::random_access_iterator_tag, T>::iterator_category iterator_category;
-		typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type        value_type;
-		typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type   difference_type;
-		typedef T*																			pointer;
-		typedef T&																			reference;
+		typedef ft::iterator<std::random_access_iterator_tag, T>
+		        iterator_type;
+		typedef typename iterator_type ::iterator_category     iterator_category;
+		typedef typename iterator_type::value_type            value_type;
+		typedef typename iterator_type::difference_type       difference_type;
+		typedef T*               pointer;
+		typedef T&             reference;
 
 		random_access_iterator() {}
 		random_access_iterator(pointer position): _position(position) {}
