@@ -149,6 +149,59 @@ int main()
 			std::cout << "								NOK!"<< std::endl;;
 		std::cout << std::endl;
 
+//		std::cout << "insert str into int vector :" << std::endl;
+//		std::string str("blabla");
+//		std_vector2.insert(std_vector2.begin(), str.begin(), str.end());
+//		ft_vector2.insert(ft_vector2.begin(), str.begin(), str.end());
+//		std::cout << "std_vector: ";
+//		for (size_t i = 0; i < std_vector2.size(); ++i)
+//			std::cout << std_vector2[i] << " ";
+//		std::cout << "	ft_vector: ";
+//		for (size_t i = 0; i < ft_vector2.size(); ++i)
+//			std::cout << ft_vector2[i] << " ";
+//		if (std_vector2.size() == ft_vector2.size() && std::equal(&(*std_vector2
+//				.begin()), &(*std_vector2.end()), &(*ft_vector2.begin())))
+//			std::cout << "								OK =)"<< std::endl;
+//		else
+//			std::cout << "								NOK!"<< std::endl;;
+//		std::cout << std::endl;
+
+		std::cout << "insert long into short vector :" << std::endl;
+		std::vector<short> std_short(5, 6);
+		ft::vector<short> ft_short(5, 6);
+		std::vector<long long> std_long(3, 99999999999);
+		ft::vector<long long> ft_long(3, 99999999999);
+		std_short.insert(std_short.begin() + 1, std_long.begin(),
+						   std_long.end());
+		ft_short.insert(ft_short.begin() + 1, ft_long.begin(), ft_long
+				.end());
+		std::cout << "std_vector: ";
+		for (size_t i = 0; i < std_short.size(); ++i)
+			std::cout << std_short[i] << " ";
+		std::cout << "	ft_vector: ";
+		for (size_t i = 0; i < ft_short.size(); ++i)
+			std::cout << ft_short[i] << " ";
+		if (std_short.size() == ft_short.size() && std::equal(&(*std_short
+				.begin()), &(*std_short.end()), &(*ft_short.begin())))
+			std::cout << "								OK =)"<< std::endl;
+		else
+			std::cout << "								NOK!"<< std::endl;;
+		std::cout << std::endl;
+
+//		std::cout << "Const iterators check :" << std::endl;
+//		std::vector<int>::const_iterator std_it = std_vector2.begin();
+//		size_t std_it1 = *std_vector2.begin();
+//		ft::vector<int>::const_iterator ft_it = ft_vector2.begin();
+//		size_t ft_it1 = *ft_vector2.begin();
+//		*std_it = 40;
+//		*ft_it = 40;
+//		std::cout << "std_it = " << *std_it << "	std_it1 = " << std_it1;
+//		std::cout << "	ft_it = " << *ft_it << "	ft_it1 = " << ft_it1;
+//		if (*ft_it == ft_it1)
+//			std::cout << "						OK =)"<< std::endl;
+//		else
+//			std::cout << "						NOK!"<< std::endl;
+
 //		std::cout << "Negative parameter with no value: " << std::endl;
 //		ft::vector<int> ft_vector5(-5);
 

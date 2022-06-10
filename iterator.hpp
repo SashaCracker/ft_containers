@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ITERATOR_HPP
+# define ITERATOR_HPP
 
 #include "utils.hpp"
 
@@ -14,6 +15,7 @@ namespace ft {
 		typedef Reference 	reference;
 		typedef Category 	iterator_category;
 	};
+
 //	struct input_iterator_tag {};
 //	struct output_iterator_tag {};
 //	struct forward_iterator_tag : public input_iterator_tag, public output_iterator_tag {};
@@ -62,7 +64,7 @@ namespace ft {
     class reverse_iterator {
     public:
 		typedef Iterator														iterator_type;
-        typedef typename ft::iterator_traits<iterator_type>::value_type         value_type;
+        typedef typename ft::iterator_traits<iterator_type>::value_type			value_type;
         typedef typename ft::iterator_traits<iterator_type>::difference_type    difference_type;
         typedef typename ft::iterator_traits<iterator_type>::pointer            pointer;
         typedef typename ft::iterator_traits<iterator_type>::reference          reference;
@@ -195,13 +197,12 @@ namespace ft {
 			ft::iterator<std::random_access_iterator_tag, T>
 	{
 	public:
-		typedef ft::iterator<std::random_access_iterator_tag, T>
-		        iterator_type;
-		typedef typename iterator_type ::iterator_category     iterator_category;
-		typedef typename iterator_type::value_type            value_type;
-		typedef typename iterator_type::difference_type       difference_type;
-		typedef T*               pointer;
-		typedef T&             reference;
+		typedef T*																				iterator_type;
+		typedef typename ft::iterator<std::random_access_iterator_tag, T>::iterator_category   iterator_category;
+		typedef typename ft::iterator<std::random_access_iterator_tag, T>::value_type      value_type;
+		typedef typename ft::iterator<std::random_access_iterator_tag, T>::difference_type    difference_type;
+		typedef typename ft::iterator<std::random_access_iterator_tag, T>::pointer        pointer;
+		typedef typename ft::iterator<std::random_access_iterator_tag, T>::reference		     reference;
 
 		random_access_iterator() {}
 		random_access_iterator(pointer position): _position(position) {}
@@ -272,6 +273,9 @@ namespace ft {
 
 		reference operator[](difference_type n) const {return *(operator+(n));}
 
+		operator random_access_iterator<const T>(void) const
+		{ return (random_access_iterator<const T>(this->_position)); }
+
 	private:
 		pointer _position;
 	};
@@ -334,3 +338,4 @@ namespace ft {
 		return lhs.base() - rhs.base();
 	}
 }
+#endif

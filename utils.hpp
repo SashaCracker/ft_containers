@@ -1,4 +1,5 @@
-#pragma once
+#ifndef UTILS_HPP
+# define UTILS_HPP
 
 namespace ft {
     template <class InputIt1, class InputIt2>
@@ -116,4 +117,5 @@ namespace ft {
 		y = tmp;
 	}
 }
+#endif
 
