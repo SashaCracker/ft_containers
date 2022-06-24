@@ -2,6 +2,31 @@
 # define UTILS_HPP
 
 namespace ft {
+
+	template <class T>
+	struct switch_const {
+		typedef T type;
+	};
+
+	template <class T>
+	struct switch_const<const T> {
+		typedef T type;
+	};
+
+	template <class Arg1, class Arg2, class Result>
+	struct binary_function {
+		typedef Arg1 first_argument_type;
+		typedef Arg2 second_argument_type;
+		typedef Result result_type;
+	};
+
+	template <class T>
+	struct less : binary_function <T, T, bool> {
+		bool operator()(const T& x, const T& y) const {
+			return x < y;
+		}
+	};
+
     template <class InputIt1, class InputIt2>
     bool lexicographical_compare(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2) {
 		while (first1!=last1)

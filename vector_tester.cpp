@@ -149,22 +149,22 @@ int main()
 			std::cout << "								NOK!"<< std::endl;;
 		std::cout << std::endl;
 
-//		std::cout << "insert str into int vector :" << std::endl;
-//		std::string str("blabla");
-//		std_vector2.insert(std_vector2.begin(), str.begin(), str.end());
-//		ft_vector2.insert(ft_vector2.begin(), str.begin(), str.end());
-//		std::cout << "std_vector: ";
-//		for (size_t i = 0; i < std_vector2.size(); ++i)
-//			std::cout << std_vector2[i] << " ";
-//		std::cout << "	ft_vector: ";
-//		for (size_t i = 0; i < ft_vector2.size(); ++i)
-//			std::cout << ft_vector2[i] << " ";
-//		if (std_vector2.size() == ft_vector2.size() && std::equal(&(*std_vector2
-//				.begin()), &(*std_vector2.end()), &(*ft_vector2.begin())))
-//			std::cout << "								OK =)"<< std::endl;
-//		else
-//			std::cout << "								NOK!"<< std::endl;;
-//		std::cout << std::endl;
+		std::cout << "insert str into int vector :" << std::endl;
+		std::string str("blabla");
+		std_vector2.insert(std_vector2.begin(), str.begin(), str.end());
+		ft_vector2.insert(ft_vector2.begin(), str.begin(), str.end());
+		std::cout << "std_vector: ";
+		for (size_t i = 0; i < std_vector2.size(); ++i)
+			std::cout << std_vector2[i] << " ";
+		std::cout << "	ft_vector: ";
+		for (size_t i = 0; i < ft_vector2.size(); ++i)
+			std::cout << ft_vector2[i] << " ";
+		if (std_vector2.size() == ft_vector2.size() && std::equal(&(*std_vector2
+				.begin()), &(*std_vector2.end()), &(*ft_vector2.begin())))
+			std::cout << "								OK =)"<< std::endl;
+		else
+			std::cout << "								NOK!"<< std::endl;;
+		std::cout << std::endl;
 
 		std::cout << "insert long into short vector :" << std::endl;
 		std::vector<short> std_short(5, 6);
