@@ -169,21 +169,11 @@ namespace ft
 		}
 
 		void swap(map& x) {
-			node_ptr root = _root;
-			allocator_type alloc = _alloc;
-			key_compare key = _k_comp;
-			value_compare value = _v_comp;
-			size_type size = _size;
-			_root = x._root;
-			_alloc = x._alloc;
-			_k_comp = x._k_comp;
-			_v_comp = x._v_comp;
-			_size = x._size;
-			x._root = root;
-			x._alloc = alloc;
-			x._size = size;
-			x._k_comp = key;
-			x._v_comp = value;
+			ft::swap(x._root, _root);
+			ft::swap(x._alloc, _alloc);
+			ft::swap(x._k_comp, _k_comp);
+			ft::swap(x._v_comp, _v_comp);
+			ft::swap(x._size, _size);
 		}
 
 		void clear() {
